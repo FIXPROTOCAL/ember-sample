@@ -1,0 +1,51 @@
+plugins {
+    id "java"
+    id "application"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs emberdir + '/lib'
+    }
+}
+
+dependencies {
+    implementation "deltix:deltix-ember-message-bus-client:$emberVersion"
+    implementation "deltix:deltix-anvil-lang:$emberVersion"
+    implementation "deltix:deltix-ember-api:$emberVersion"
+    implementation "deltix:deltix-ember-algo-api:$emberVersion"
+    implementation "deltix:deltix-ember-message:$emberVersion"
+    implementation "deltix:deltix-ember-codec:$emberVersion"
+    implementation "deltix:deltix-anvil-cluster:$emberVersion"
+    // Centralized security master
+    implementation 'deltix:sm-messages:1.4.38'
+    implementation 'deltix:deltix-sm-api:1.4.38'
+
+    // Decimal datatype
+    implementation 'deltix:deltix-dfp:0.10.21'
+
+    // Logging
+    implementation 'deltix:deltix-gflog-api:2.1.12'
+
+}
+
+application {
+    mainClassName = "deltix.ember.message.bus.samples.DuplexSample"
+}
+
+// ZIP with sample  to share with clients (result file can be found under build/distributions/*.zip)
+task makeZIP(type: Zip) {
+    archiveBaseName = 'ember-java-sample'
+
+    from('.') {
+        include '**/*'
+        exclude '.git/'
+        exclude '.gradle/'
+        exclude '.idea/libraries/'
+        exclude '.idea/vcs.xml'
+        exclude 'build/'
+        exclude 'out/'
+    }
+}
